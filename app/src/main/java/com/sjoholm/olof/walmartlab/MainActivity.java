@@ -17,6 +17,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Listener<ProductResult> {
+    private static final String KEY_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
+    private static final String KEY_PRODUCTS = "PRODUCTS";
+
     private MyAdapter mAdapter;
     private ProductRequester mProductRequester;
 
@@ -49,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
 
 
         if (savedInstanceState != null) {
-            ArrayList<Product> products = savedInstanceState.getParcelableArrayList("PRODUCTS");
-            int totalProducts = savedInstanceState.getInt("TOTAL_PRODUCTS", Integer.MAX_VALUE);
+            ArrayList<Product> products = savedInstanceState.getParcelableArrayList(KEY_PRODUCTS);
+            int totalProducts = savedInstanceState.getInt(KEY_TOTAL_PRODUCTS, Integer.MAX_VALUE);
             mAdapter.addProducts(products);
             mProductRequester.setTotalProducts(totalProducts);
         } else {
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("PRODUCTS", mAdapter.getProducts());
-        outState.putInt("TOTAL_PRODUCTS", mProductRequester.getTotalProducts());
+        outState.putParcelableArrayList(KEY_PRODUCTS, mAdapter.getProducts());
+        outState.putInt(KEY_TOTAL_PRODUCTS, mProductRequester.getTotalProducts());
     }
 }
