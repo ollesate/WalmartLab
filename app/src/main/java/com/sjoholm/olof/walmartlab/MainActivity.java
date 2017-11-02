@@ -14,11 +14,12 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements Listener<ProductResult>,MyAdapter.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements Listener<ProductResult>,
+        ProductRecyclerViewAdapter.OnItemClickListener {
     private static final String KEY_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
     private static final String KEY_PRODUCTS = "PRODUCTS";
 
-    private MyAdapter mAdapter;
+    private ProductRecyclerViewAdapter mAdapter;
     private ProductRequester mProductRequester;
 
     @Override
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdapter = new MyAdapter(this);
+        mAdapter = new ProductRecyclerViewAdapter(this);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mProductRequester = new ProductRequester(requestQueue, this);

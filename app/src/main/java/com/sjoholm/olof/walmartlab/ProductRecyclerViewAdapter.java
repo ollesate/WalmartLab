@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-class MyAdapter extends RecyclerView.Adapter<ProductHolder> implements View.OnClickListener {
+class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductHolder> implements View.OnClickListener {
     private final ArrayList<Product> mProducts = new ArrayList<>();
     private final OnItemClickListener mOnItemClickListener;
 
@@ -19,7 +19,7 @@ class MyAdapter extends RecyclerView.Adapter<ProductHolder> implements View.OnCl
         void onItemClicked(@NonNull Product product, int index);
     }
 
-    public MyAdapter(@NonNull OnItemClickListener listener) {
+    public ProductRecyclerViewAdapter(@NonNull OnItemClickListener listener) {
         mOnItemClickListener = listener;
     }
 
