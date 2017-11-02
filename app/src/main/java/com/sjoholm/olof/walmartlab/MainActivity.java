@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     private static final String KEY_PRODUCTS = "PRODUCTS";
 
     private ProductRecyclerViewAdapter mAdapter;
-    private ProductRequester mProductRequester;
+    private ProductPageRequester mProductRequester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,46 +30,34 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         mAdapter = new ProductRecyclerViewAdapter(this);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        mProductRequester = new ProductRequester(requestQueue, this);
+        mProductRequester = new ProductPageRequester(15, requestQueue, this);
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int currentScroll = recyclerView.computeVerticalScrollOffset() + recyclerView.computeVerticalScrollExtent();
-                int scrollMax = recyclerView.computeVerticalScrollRange();
-
-                float scale = currentScroll / (scrollMax * 1.0f);
-                if (dy > 0 && scale > 0.75) {
-                    mProductRequester.request(30);
-                }
-//                Log.d("Olof", "Scroll " + currentScroll + ", " + scrollMax + ", " + scale);
+                mProductRequester.makeRequestsAtPage(layoutManager.findLastVisibleItemPosition());
             }
         });
-
 
         if (savedInstanceState != null) {
             ArrayList<Product> products = savedInstanceState.getParcelableArrayList(KEY_PRODUCTS);
             int totalProducts = savedInstanceState.getInt(KEY_TOTAL_PRODUCTS, Integer.MAX_VALUE);
             mAdapter.addProducts(products);
-            mProductRequester.setTotalProducts(totalProducts);
+            mProductRequester.setTotalPages(totalProducts);
+            mProductRequester.setCurrentPage(products.size());
         } else {
-            mProductRequester.request(20);
+            mProductRequester.loadInitialPages();
         }
-
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override
     public void onResponse(ProductResult result) {
-        mProductRequester.setTotalProducts(result.totalProducts);
+        mProductRequester.setTotalPages(result.totalProducts);
         mAdapter.addProducts(result.products);
     }
 
@@ -77,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(KEY_PRODUCTS, mAdapter.getProducts());
-        outState.putInt(KEY_TOTAL_PRODUCTS, mProductRequester.getTotalProducts());
+        outState.putInt(KEY_TOTAL_PRODUCTS, mProductRequester.getTotalPages());
     }
 
     @Override
@@ -87,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         extras.putInt(ProductDetailActivity.EXTRA_CURRENT_PRODUCT, index);
         extras.putParcelableArrayList(ProductDetailActivity.EXTRA_PRODUCTS, mAdapter.getProducts());
         extras.putInt(ProductDetailActivity.EXTRA_TOTAL_PRODUCTS,
-                mProductRequester.getTotalProducts());
+                mProductRequester.getTotalPages());
         intent.putExtras(extras);
         startActivity(intent);
     }

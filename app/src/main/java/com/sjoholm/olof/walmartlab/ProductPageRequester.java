@@ -9,13 +9,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 public class ProductPageRequester implements Response.ErrorListener {
+    private static final String LOG_TAG = "ProductPageRequester";
+
     private static final int MIN_AMOUNT_PAGE_REQUESTS = 5;
-    private static final int THRESHOLD_FOR_PAGE_REQUESTS = 50;
+    private static final int THRESHOLD_FOR_PAGE_REQUESTS = 5;
 
     private final int mInitialPages;
-    @NonNull
     private final RequestQueue queue;
-    @NonNull
     private final Response.Listener<ProductResult> listener;
 
     private int mMinAmountPageRequests = MIN_AMOUNT_PAGE_REQUESTS;
@@ -47,13 +47,17 @@ public class ProductPageRequester implements Response.ErrorListener {
         mTotalPages = totalPages;
     }
 
+    public void setCurrentPage(int currentPage) {
+        mCurrentPage = currentPage;
+    }
+
     public void loadInitialPages() {
         mCurrentPage = 1;
         requestPages(mInitialPages);
     }
 
     public void makeRequestsAtPage(int page) {
-        if (page == mTotalPages) {
+        if (mCurrentPage == mTotalPages) {
             // We can't load more
             return;
         }
@@ -72,7 +76,7 @@ public class ProductPageRequester implements Response.ErrorListener {
     }
 
     private void requestPages(int count) {
-        Log.d("Olof", "Request pages from " + mCurrentPage + " to " + (mCurrentPage + count));
+        Log.d(LOG_TAG, "Request pages from " + mCurrentPage + " to " + (mCurrentPage + count));
         queue.add(new ProductsRequest(mCurrentPage, count, listener, this));
         mCurrentPage += count;
     }

@@ -10,14 +10,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends AppCompatActivity implements Response.Listener<ProductResult> {
     public static final String EXTRA_PRODUCTS = "PRODUCTS";
     public static final String EXTRA_CURRENT_PRODUCT = "CURRENT_PRODUCT";
     public static final String EXTRA_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
     private ProductPagerAdapter mAdapter;
+    private ProductPageRequester mPageRequester;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                                        int positionOffsetPixels) {
-
+                mPageRequester.makeRequestsAtPage(position);
             }
 
             @Override
@@ -55,8 +60,14 @@ public class ProductDetailActivity extends AppCompatActivity {
             throw new IllegalArgumentException("No products provided");
         }
 
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        mPageRequester = new ProductPageRequester(20, requestQueue, this);
+        mPageRequester.setTotalPages(totalProducts);
+        mPageRequester.setCurrentPage(products.size());
+
         mAdapter.addProducts(products);
         mAdapter.notifyDataSetChanged();
+        viewPager.setCurrentItem(currentProduct);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -74,6 +85,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResponse(ProductResult response) {
+        mPageRequester.setTotalPages(response.totalProducts);
+        mAdapter.addProducts(response.products);
+        mAdapter.notifyDataSetChanged();
     }
 
     private static class ProductPagerAdapter extends FragmentStatePagerAdapter {
