@@ -99,17 +99,17 @@ public class MainActivity extends AppCompatActivity implements Listener<List<Pro
         }
     }
 
-    private static class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private static class MyAdapter extends RecyclerView.Adapter<ProductHolder> {
         private List<Product> mData = new ArrayList<>();
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            return new MyViewHolder(inflater.inflate(R.layout.item, parent, false));
+            return new ProductHolder(inflater.inflate(R.layout.item, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(ProductHolder holder, int position) {
             holder.onBind(mData.get(position));
         }
 
