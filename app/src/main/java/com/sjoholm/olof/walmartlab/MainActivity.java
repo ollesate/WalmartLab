@@ -1,22 +1,20 @@
 package com.sjoholm.olof.walmartlab;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Listener<ProductResult> {
+public class MainActivity extends AppCompatActivity implements Listener<ProductResult>,MyAdapter.OnItemClickListener {
     private static final String KEY_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
     private static final String KEY_PRODUCTS = "PRODUCTS";
 
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdapter = new MyAdapter();
+        mAdapter = new MyAdapter(this);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mProductRequester = new ProductRequester(requestQueue, this);
@@ -59,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         } else {
             mProductRequester.request(20);
         }
+
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -67,39 +72,22 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         mAdapter.addProducts(result.products);
     }
 
-    private static class MyAdapter extends RecyclerView.Adapter<ProductHolder> {
-        private ArrayList<Product> mData = new ArrayList<>();
-
-        @Override
-        public ProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            return new ProductHolder(inflater.inflate(R.layout.item, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(ProductHolder holder, int position) {
-            holder.onBind(mData.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mData.size();
-        }
-
-        public void addProducts(List<Product> products) {
-            mData.addAll(products);
-            notifyItemRangeInserted(mData.size(), products.size());
-        }
-
-        public ArrayList<Product> getProducts() {
-            return mData;
-        }
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(KEY_PRODUCTS, mAdapter.getProducts());
         outState.putInt(KEY_TOTAL_PRODUCTS, mProductRequester.getTotalProducts());
+    }
+
+    @Override
+    public void onItemClicked(@NonNull Product product, int index) {
+        Intent intent = new Intent(this, ProductDetailActivity.class);
+        Bundle extras = new Bundle();
+        extras.putInt(ProductDetailActivity.EXTRA_CURRENT_PRODUCT, index);
+        extras.putParcelableArrayList(ProductDetailActivity.EXTRA_PRODUCTS, mAdapter.getProducts());
+        extras.putInt(ProductDetailActivity.EXTRA_TOTAL_PRODUCTS,
+                mProductRequester.getTotalProducts());
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 }
