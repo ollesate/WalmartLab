@@ -6,18 +6,21 @@ import android.os.Parcelable;
 public class Product implements Parcelable {
     public final String productId;
     public final String productName;
-    public final String description;
+    public final String shortDescription;
+    public final String longDescription;
     public final String price;
     public final String reviewRating;
     public final String reviewCount;
     public final String productImage;
     public final boolean inStock;
 
-    public Product(String productId, String productName, String description, String price,
-                   String reviewRating, String reviewCount, String productImage, boolean inStock) {
+    public Product(String productId, String productName, String shortDescription,
+                   String longDescription, String price, String reviewRating, String reviewCount,
+                   String productImage, boolean inStock) {
         this.productId = productId;
         this.productName = productName;
-        this.description = description;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
         this.price = price;
         this.reviewRating = reviewRating;
         this.reviewCount = reviewCount;
@@ -28,7 +31,8 @@ public class Product implements Parcelable {
     protected Product(Parcel in) {
         productId = in.readString();
         productName = in.readString();
-        description = in.readString();
+        shortDescription = in.readString();
+        longDescription = in.readString();
         price = in.readString();
         reviewRating = in.readString();
         reviewCount = in.readString();
@@ -57,7 +61,8 @@ public class Product implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(productId);
         dest.writeString(productName);
-        dest.writeString(description);
+        dest.writeString(shortDescription);
+        dest.writeString(longDescription);
         dest.writeString(price);
         dest.writeString(reviewRating);
         dest.writeString(reviewCount);

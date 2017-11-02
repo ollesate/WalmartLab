@@ -1,15 +1,11 @@
 package com.sjoholm.olof.walmartlab;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,10 +24,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
 
         ImageView productImage = (ImageView) findViewById(R.id.product_image);
+        TextView productName = (TextView) findViewById(R.id.product_name);
         TextView description = (TextView) findViewById(R.id.description);
         TextView price = (TextView) findViewById(R.id.price);
         TextView reviewRating = (TextView) findViewById(R.id.review_rating);
         TextView reviewCount = (TextView) findViewById(R.id.review_count);
+        TextView inStock = (TextView) findViewById(R.id.in_stock);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -47,10 +45,18 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             // Bind views
             Picasso.with(this).load(product.productImage).into(productImage);
-            description.setText(product.description);
+
+            productName.setText(product.productName);
+
+            String descr = product.longDescription != null ? product.longDescription
+                    : product.shortDescription;
+            if (descr != null) {
+                description.setText(Html.fromHtml(descr));
+            }
             price.setText(product.price);
             reviewRating.setText(product.reviewRating);
-            reviewCount.setText(product.reviewCount);
+            reviewCount.setText(product.reviewCount + " ratings");
+            inStock.setText(product.inStock ? "Currently in stock" : "Currently out of stock");
         }
 
         ActionBar actionBar = getSupportActionBar();

@@ -52,14 +52,16 @@ class ProductsRequest extends JsonRequest<ProductResult> {
                 JSONObject jsonProduct = productsArray.getJSONObject(i);
                 String productId = jsonProduct.getString("productId");
                 String productName = jsonProduct.getString("productName");
-                String description = jsonProduct.has("shortDescription") ?
-                        jsonProduct.getString("shortDescription") : null;
+                String shortDescription = jsonProduct.has("shortDescription")
+                        ? jsonProduct.getString("shortDescription") : null;
+                String longDescription = jsonProduct.has("longDescription")
+                        ? jsonProduct.getString("longDescription") : null;
                 String price = jsonProduct.getString("price");
                 String reviewRating = jsonProduct.getString("reviewRating");
                 String reviewCount = jsonProduct.getString("reviewCount");
                 String image = jsonProduct.getString("productImage");
                 boolean inStock = jsonProduct.getBoolean("inStock");
-                products.add(new Product(productId, productName, description, price,
+                products.add(new Product(productId, productName, shortDescription, longDescription, price,
                         reviewRating, reviewCount, image, inStock));
             }
         } catch (JSONException e) {
