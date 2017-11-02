@@ -1,6 +1,7 @@
 package com.sjoholm.olof.walmartlab;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Listener<ProductResult> {
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mProductRequester = new ProductRequester(requestQueue, this);
-        mProductRequester.request(20);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -47,6 +48,14 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         });
 
 
+        if (savedInstanceState != null) {
+            ArrayList<Product> products = savedInstanceState.getParcelableArrayList("PRODUCTS");
+            int totalProducts = savedInstanceState.getInt("TOTAL_PRODUCTS", Integer.MAX_VALUE);
+            mAdapter.addProducts(products);
+            mProductRequester.setTotalProducts(totalProducts);
+        } else {
+            mProductRequester.request(20);
+        }
     }
 
     @Override
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     }
 
     private static class MyAdapter extends RecyclerView.Adapter<ProductHolder> {
-        private List<Product> mData = new ArrayList<>();
+        private ArrayList<Product> mData = new ArrayList<>();
 
         @Override
         public ProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -78,6 +87,16 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
             mData.addAll(products);
             notifyItemRangeInserted(mData.size(), products.size());
         }
+
+        public ArrayList<Product> getProducts() {
+            return mData;
+        }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("PRODUCTS", mAdapter.getProducts());
+        outState.putInt("TOTAL_PRODUCTS", mProductRequester.getTotalProducts());
+    }
 }

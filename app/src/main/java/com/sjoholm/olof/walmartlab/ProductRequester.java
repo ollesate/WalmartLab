@@ -13,6 +13,7 @@ class ProductRequester implements Response.ErrorListener, Response.Listener<Prod
     int mTotalProducts = Integer.MAX_VALUE;
     int mIndex = 1;
     private boolean mRequesting;
+    private int totalProducts;
 
     public ProductRequester(@NonNull RequestQueue queue,
                             @NonNull Response.Listener<ProductResult> listener) {
@@ -46,5 +47,9 @@ class ProductRequester implements Response.ErrorListener, Response.Listener<Prod
 
     public void setTotalProducts(int totalProducts) {
         mTotalProducts = totalProducts;
+    }
+
+    public int getTotalProducts() {
+        return totalProducts;
     }
 }
