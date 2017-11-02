@@ -6,12 +6,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
+
+import static android.R.attr.data;
 
 public class ProductDetailActivity extends AppCompatActivity {
     public static final String EXTRA_PRODUCTS = "PRODUCTS";
@@ -30,6 +35,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         TextView reviewRating = (TextView) findViewById(R.id.review_rating);
         TextView reviewCount = (TextView) findViewById(R.id.review_count);
         TextView inStock = (TextView) findViewById(R.id.in_stock);
+        ViewGroup starHolder = (ViewGroup) findViewById(R.id.star_holder);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -54,7 +60,20 @@ public class ProductDetailActivity extends AppCompatActivity {
                 description.setText(Html.fromHtml(descr));
             }
             price.setText(product.price);
-            reviewRating.setText(product.reviewRating);
+
+
+            double rating = Double.valueOf(product.reviewRating);
+            DecimalFormat df = new DecimalFormat("#.#");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            reviewRating.setText(df.format(rating));
+
+            long stars = Math.round(rating);
+            for (int i = 0; i < 5; i++) {
+                ImageView starImage = (ImageView) starHolder.getChildAt(i);
+                int image = i < stars ? R.drawable.ic_star_full : R.drawable.ic_star_empty;
+                starImage.setImageDrawable(getResources().getDrawable(image));
+            }
+
             reviewCount.setText(product.reviewCount + " ratings");
             inStock.setText(product.inStock ? "Currently in stock" : "Currently out of stock");
         }

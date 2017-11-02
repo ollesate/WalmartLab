@@ -35,15 +35,15 @@ class ProductHolder extends RecyclerView.ViewHolder {
         mStarHolder = (ViewGroup) itemView.findViewById(R.id.star_holder);
     }
 
-    public void onBind(@NonNull Product data) {
-        mProductName.setText(data.productName);
-        mPrice.setText(data.price);
+    public void onBind(@NonNull Product product) {
+        mProductName.setText(product.productName);
+        mPrice.setText(product.price);
 
-        mReviewCount.setText(data.reviewCount + " ratings");
-        mInStock.setText(data.inStock ? "In stock" : "Not in stock");
-        Picasso.with(itemView.getContext()).load(data.productImage).into(mProductImage);
+        mReviewCount.setText(product.reviewCount + " ratings");
+        mInStock.setText(product.inStock ? "In stock" : "Not in stock");
+        Picasso.with(itemView.getContext()).load(product.productImage).into(mProductImage);
 
-        double rating = Double.valueOf(data.reviewRating);
+        double rating = Double.valueOf(product.reviewRating);
         DecimalFormat df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.HALF_UP);
 

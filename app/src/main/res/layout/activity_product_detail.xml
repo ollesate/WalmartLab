@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content" />
 
             <LinearLayout
+                android:id="@+id/star_holder"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
