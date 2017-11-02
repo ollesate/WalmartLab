@@ -61,7 +61,9 @@ public class ProductDetailActivity extends AppCompatActivity implements Response
         }
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        mPageRequester = new ProductPageRequester(20, requestQueue, this);
+        mPageRequester = new ProductPageRequester(requestQueue, this);
+        mPageRequester.setMinAmountRequest(3);
+        mPageRequester.setPagesToLoadAhead(2);
         mPageRequester.setTotalPages(totalProducts);
         mPageRequester.setCurrentPage(products.size());
 

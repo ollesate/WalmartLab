@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.Listener;
@@ -18,9 +17,10 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         ProductRecyclerViewAdapter.OnItemClickListener {
     private static final String KEY_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
     private static final String KEY_PRODUCTS = "PRODUCTS";
+    private static final int INITIAL_LOADED_PAGES = 20;
 
     private ProductRecyclerViewAdapter mAdapter;
-    private ProductPageRequester mProductRequester;
+    private ProductPageRequester mPageRequester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,9 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         mAdapter = new ProductRecyclerViewAdapter(this);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        mProductRequester = new ProductPageRequester(15, requestQueue, this);
+        mPageRequester = new ProductPageRequester(requestQueue, this);
+        mPageRequester.setMinAmountRequest(5);
+        mPageRequester.setPagesToLoadAhead(10);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                mProductRequester.makeRequestsAtPage(layoutManager.findLastVisibleItemPosition());
+                mPageRequester.makeRequestsAtPage(layoutManager.findLastVisibleItemPosition());
             }
         });
 
@@ -48,16 +50,16 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
             ArrayList<Product> products = savedInstanceState.getParcelableArrayList(KEY_PRODUCTS);
             int totalProducts = savedInstanceState.getInt(KEY_TOTAL_PRODUCTS, Integer.MAX_VALUE);
             mAdapter.addProducts(products);
-            mProductRequester.setTotalPages(totalProducts);
-            mProductRequester.setCurrentPage(products.size());
+            mPageRequester.setTotalPages(totalProducts);
+            mPageRequester.setCurrentPage(products.size());
         } else {
-            mProductRequester.loadInitialPages();
+            mPageRequester.requestPages(INITIAL_LOADED_PAGES);
         }
     }
 
     @Override
     public void onResponse(ProductResult result) {
-        mProductRequester.setTotalPages(result.totalProducts);
+        mPageRequester.setTotalPages(result.totalProducts);
         mAdapter.addProducts(result.products);
     }
 
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(KEY_PRODUCTS, mAdapter.getProducts());
-        outState.putInt(KEY_TOTAL_PRODUCTS, mProductRequester.getTotalPages());
+        outState.putInt(KEY_TOTAL_PRODUCTS, mPageRequester.getTotalPages());
     }
 
     @Override
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         extras.putInt(ProductDetailActivity.EXTRA_CURRENT_PRODUCT, index);
         extras.putParcelableArrayList(ProductDetailActivity.EXTRA_PRODUCTS, mAdapter.getProducts());
         extras.putInt(ProductDetailActivity.EXTRA_TOTAL_PRODUCTS,
-                mProductRequester.getTotalPages());
+                mPageRequester.getTotalPages());
         intent.putExtras(extras);
         startActivity(intent);
     }
