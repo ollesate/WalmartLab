@@ -65,7 +65,9 @@ public class ProductDetailActivity extends AppCompatActivity
         int totalProducts = extras.getInt(EXTRA_TOTAL_PRODUCTS);
 
         if (products == null) {
-            throw new IllegalArgumentException("No products provided");
+            Log.e(LOG_TAG, "No products provided");
+            finish();
+            return;
         }
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
