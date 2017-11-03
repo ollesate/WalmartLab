@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mPageRequester = new ProductPageRequester(requestQueue, this);
         mPageRequester.setMinAmountRequest(5);
-        mPageRequester.setPagesToLoadAhead(10);
+        mPageRequester.setPagesToLoadAhead(20);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 

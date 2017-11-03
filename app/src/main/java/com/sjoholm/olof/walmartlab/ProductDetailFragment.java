@@ -78,7 +78,10 @@ public class ProductDetailFragment extends Fragment {
             starImage.setImageDrawable(getResources().getDrawable(image));
         }
 
-        reviewCount.setText(product.reviewCount + " ratings");
-        inStock.setText(product.inStock ? "Currently in stock" : "Currently out of stock");
+        int resString = product.reviewCount == 1 ? R.string.product_rating_count_singular
+                : R.string.product_rating_count_plural;
+        reviewCount.setText(getString(resString, product.reviewCount));
+        inStock.setText(product.inStock ? R.string.product_in_stock
+                : R.string.product_out_of_stock);
     }
 }

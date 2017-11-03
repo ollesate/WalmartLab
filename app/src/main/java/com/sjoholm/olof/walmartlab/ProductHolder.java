@@ -1,6 +1,7 @@
 package com.sjoholm.olof.walmartlab;
 
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -39,8 +40,13 @@ class ProductHolder extends RecyclerView.ViewHolder {
         mProductName.setText(product.productName);
         mPrice.setText(product.price);
 
-        mReviewCount.setText(product.reviewCount + " ratings");
-        mInStock.setText(product.inStock ? "In stock" : "Not in stock");
+        Resources res = itemView.getContext().getResources();
+
+        int resString = product.reviewCount == 1 ? R.string.product_rating_count_singular
+                : R.string.product_rating_count_plural;
+        mReviewCount.setText(res.getString(resString, product.reviewCount));
+        mInStock.setText(product.inStock ? R.string.product_in_stock
+                : R.string.product_out_of_stock);
         Picasso.with(itemView.getContext()).load(product.productImage).into(mProductImage);
 
         double rating = Double.valueOf(product.reviewRating);

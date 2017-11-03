@@ -10,12 +10,12 @@ public class Product implements Parcelable {
     public final String longDescription;
     public final String price;
     public final String reviewRating;
-    public final String reviewCount;
+    public final int reviewCount;
     public final String productImage;
     public final boolean inStock;
 
     public Product(String productId, String productName, String shortDescription,
-                   String longDescription, String price, String reviewRating, String reviewCount,
+                   String longDescription, String price, String reviewRating, int reviewCount,
                    String productImage, boolean inStock) {
         this.productId = productId;
         this.productName = productName;
@@ -35,7 +35,7 @@ public class Product implements Parcelable {
         longDescription = in.readString();
         price = in.readString();
         reviewRating = in.readString();
-        reviewCount = in.readString();
+        reviewCount = in.readInt();
         productImage = in.readString();
         inStock = in.readByte() != 0;
     }
@@ -65,7 +65,7 @@ public class Product implements Parcelable {
         dest.writeString(longDescription);
         dest.writeString(price);
         dest.writeString(reviewRating);
-        dest.writeString(reviewCount);
+        dest.writeInt(reviewCount);
         dest.writeString(productImage);
         dest.writeByte((byte) (inStock ? 1 : 0));
     }

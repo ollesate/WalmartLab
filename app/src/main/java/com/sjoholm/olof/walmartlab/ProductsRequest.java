@@ -58,7 +58,7 @@ class ProductsRequest extends JsonRequest<ProductResult> {
                         ? jsonProduct.getString("longDescription") : null;
                 String price = jsonProduct.getString("price");
                 String reviewRating = jsonProduct.getString("reviewRating");
-                String reviewCount = jsonProduct.getString("reviewCount");
+                int reviewCount = jsonProduct.getInt("reviewCount");
                 String image = jsonProduct.getString("productImage");
                 boolean inStock = jsonProduct.getBoolean("inStock");
                 products.add(new Product(productId, productName, shortDescription, longDescription, price,
