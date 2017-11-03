@@ -42,7 +42,7 @@ class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductHolder> imp
         return mProducts.size();
     }
 
-    public void addProducts(List<Product> products) {
+    public void addProducts(@NonNull List<Product> products) {
         mProducts.addAll(products);
         notifyItemRangeInserted(mProducts.size(), products.size());
     }

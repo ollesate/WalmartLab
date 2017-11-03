@@ -1,8 +1,6 @@
 package com.sjoholm.olof.walmartlab;
 
 
-import android.util.Log;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -18,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ProductsRequest extends JsonRequest<ProductResult> {
-    private static String API = "170c7f99-81b5-4904-99c6-a9000794f757";
-    private static String BASE =
+    private static final String API = "170c7f99-81b5-4904-99c6-a9000794f757";
+    private static final String BASE =
             "https://walmartlabs-test.appspot.com/_ah/api/walmart/v1/walmartproducts";
 
     public ProductsRequest(int page, int count, Response.Listener<ProductResult> listener,
@@ -28,7 +26,6 @@ class ProductsRequest extends JsonRequest<ProductResult> {
     }
 
     private static String getUrl(int page, int count) {
-        Log.d("Olof", BASE + "/" + API + "/" + page + "/" + count);
         return BASE + "/" + API + "/" + page + "/" + count;
     }
 

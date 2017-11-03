@@ -6,9 +6,8 @@ import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
-public class ProductPageRequester implements Response.ErrorListener {
+public class ProductPageRequester {
     private static final String LOG_TAG = "ProductPageRequester";
 
     private static final int DEFAULT_MIN_AMOUNT_PAGE_REQUESTS = 5;
@@ -16,6 +15,7 @@ public class ProductPageRequester implements Response.ErrorListener {
 
     private final RequestQueue mQueue;
     private final Response.Listener<ProductResult> mListener;
+    private final Response.ErrorListener mErrorListener;
 
     private int mMinAmountPageRequests = DEFAULT_MIN_AMOUNT_PAGE_REQUESTS;
     private int mPagesToLoadAhead = DEFAULT_PAGES_TO_LOAD_AHEAD;
@@ -24,9 +24,11 @@ public class ProductPageRequester implements Response.ErrorListener {
     private int mCurrentPage = 1;
 
     public ProductPageRequester(@NonNull RequestQueue queue,
-                                @NonNull Response.Listener<ProductResult> listener) {
+                                @NonNull Response.Listener<ProductResult> listener,
+                                @NonNull Response.ErrorListener errorListener) {
         mQueue = queue;
         mListener = listener;
+        mErrorListener = errorListener;
     }
 
     public void setMinAmountRequest(int minAmountPageRequests) {
@@ -68,13 +70,7 @@ public class ProductPageRequester implements Response.ErrorListener {
         // Don't load more than allowed
         count = Math.min(count, mTotalPages - mCurrentPage);
         Log.d(LOG_TAG, "Request pages from " + mCurrentPage + " to " + (mCurrentPage + count));
-        mQueue.add(new ProductsRequest(mCurrentPage, count, mListener, this));
+        mQueue.add(new ProductsRequest(mCurrentPage, count, mListener, mErrorListener));
         mCurrentPage += count;
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        // We don't want no errors
-        throw new RuntimeException(error.getMessage());
     }
 }

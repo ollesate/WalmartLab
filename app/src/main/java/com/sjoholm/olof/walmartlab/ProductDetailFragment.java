@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class ProductDetailFragment extends Fragment {
+    private static final String LOG_TAG = "ProductDetailFragment";
     private static String EXTRA_PRODUCT = "PRODUCT";
 
     public static ProductDetailFragment newInstance(@NonNull Product product) {
@@ -50,10 +52,11 @@ public class ProductDetailFragment extends Fragment {
         Product product = getArguments().getParcelable(EXTRA_PRODUCT);
 
         if (product == null) {
-            throw new IllegalArgumentException("No product provided");
+            Log.e(LOG_TAG, "No products provided in extras");
+            getActivity().finish();
+            return;
         }
 
-        // Bind views
         Picasso.with(getContext()).load(product.productImage).into(productImage);
 
         productName.setText(product.productName);

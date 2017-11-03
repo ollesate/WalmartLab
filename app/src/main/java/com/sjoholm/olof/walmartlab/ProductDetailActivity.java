@@ -8,19 +8,27 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDetailActivity extends AppCompatActivity implements Response.Listener<ProductResult> {
+public class ProductDetailActivity extends AppCompatActivity
+        implements Response.Listener<ProductResult>, Response.ErrorListener {
     public static final String EXTRA_PRODUCTS = "PRODUCTS";
     public static final String EXTRA_CURRENT_PRODUCT = "CURRENT_PRODUCT";
     public static final String EXTRA_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
+
+    private static final String LOG_TAG = "ProductDetailActivity";
+    private static final int MIN_AMOUNT_REQUEST = 3;
+    private static final int PAGES_TO_LOAD_AHEAD = 5;
+
     private ProductPagerAdapter mAdapter;
     private ProductPageRequester mPageRequester;
 
@@ -61,9 +69,9 @@ public class ProductDetailActivity extends AppCompatActivity implements Response
         }
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        mPageRequester = new ProductPageRequester(requestQueue, this);
-        mPageRequester.setMinAmountRequest(3);
-        mPageRequester.setPagesToLoadAhead(5);
+        mPageRequester = new ProductPageRequester(requestQueue, this, this);
+        mPageRequester.setMinAmountRequest(MIN_AMOUNT_REQUEST);
+        mPageRequester.setPagesToLoadAhead(PAGES_TO_LOAD_AHEAD);
         mPageRequester.setTotalPages(totalProducts);
         mPageRequester.setCurrentPage(products.size());
 
@@ -94,6 +102,11 @@ public class ProductDetailActivity extends AppCompatActivity implements Response
         mPageRequester.setTotalPages(response.totalProducts);
         mAdapter.addProducts(response.products);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.e(LOG_TAG, error.getMessage(), error);
     }
 
     private static class ProductPagerAdapter extends FragmentStatePagerAdapter {
