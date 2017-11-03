@@ -23,8 +23,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     private static final String KEY_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
     private static final String KEY_PRODUCTS = "PRODUCTS";
     private static final int INITIAL_LOADED_PAGES = 20;
-    private static final int MIN_AMOUNT_REQUEST = 5;
-    private static final int PAGES_TO_LOAD_AHEAD = 20;
+    private static final int PAGES_TO_LOAD_AHEAD = 25;
 
     private ProductRecyclerViewAdapter mAdapter;
     private ProductPageRequester mPageRequester;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mPageRequester = new ProductPageRequester(requestQueue, this, this);
-        mPageRequester.setMinAmountRequest(MIN_AMOUNT_REQUEST);
         mPageRequester.setPagesToLoadAhead(PAGES_TO_LOAD_AHEAD);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);

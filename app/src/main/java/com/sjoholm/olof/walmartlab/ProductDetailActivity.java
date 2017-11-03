@@ -25,7 +25,6 @@ public class ProductDetailActivity extends AppCompatActivity
     public static final String EXTRA_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
 
     private static final String LOG_TAG = "ProductDetailActivity";
-    private static final int MIN_AMOUNT_REQUEST = 3;
     private static final int PAGES_TO_LOAD_AHEAD = 5;
 
     private ProductPagerAdapter mAdapter;
@@ -74,7 +73,6 @@ public class ProductDetailActivity extends AppCompatActivity
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mPageRequester = new ProductPageRequester(requestQueue, this, this);
-        mPageRequester.setMinAmountRequest(MIN_AMOUNT_REQUEST);
         mPageRequester.setPagesToLoadAhead(PAGES_TO_LOAD_AHEAD);
         mPageRequester.setTotalPages(totalProducts);
         mPageRequester.setCurrentPage(products.size());

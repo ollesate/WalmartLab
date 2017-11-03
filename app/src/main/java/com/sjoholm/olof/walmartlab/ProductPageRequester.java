@@ -10,14 +10,12 @@ import com.android.volley.Response;
 public class ProductPageRequester {
     private static final String LOG_TAG = "ProductPageRequester";
 
-    private static final int DEFAULT_MIN_AMOUNT_PAGE_REQUESTS = 5;
     private static final int DEFAULT_PAGES_TO_LOAD_AHEAD = 5;
 
     private final RequestQueue mQueue;
     private final Response.Listener<ProductResult> mListener;
     private final Response.ErrorListener mErrorListener;
 
-    private int mMinAmountPageRequests = DEFAULT_MIN_AMOUNT_PAGE_REQUESTS;
     private int mPagesToLoadAhead = DEFAULT_PAGES_TO_LOAD_AHEAD;
 
     private int mTotalPages = Integer.MAX_VALUE;
@@ -29,10 +27,6 @@ public class ProductPageRequester {
         mQueue = queue;
         mListener = listener;
         mErrorListener = errorListener;
-    }
-
-    public void setMinAmountRequest(int minAmountPageRequests) {
-        mMinAmountPageRequests = minAmountPageRequests;
     }
 
     public void setPagesToLoadAhead(int pagesToLoadAhead) {
@@ -60,10 +54,7 @@ public class ProductPageRequester {
         if (page + mPagesToLoadAhead <= mCurrentPage) {
             return;
         }
-
-        int overshoot = page + mPagesToLoadAhead - mCurrentPage;
-        int pagesToLoad = Math.max(mMinAmountPageRequests, overshoot);
-        requestPages(pagesToLoad);
+        requestPages(mPagesToLoadAhead);
     }
 
     public void requestPages(int count) {
