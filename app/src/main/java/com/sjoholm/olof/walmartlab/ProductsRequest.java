@@ -58,8 +58,8 @@ class ProductsRequest extends JsonRequest<ProductResult> {
                 int reviewCount = jsonProduct.getInt("reviewCount");
                 String image = jsonProduct.getString("productImage");
                 boolean inStock = jsonProduct.getBoolean("inStock");
-                products.add(new Product(productId, productName, shortDescription, longDescription, price,
-                        reviewRating, reviewCount, image, inStock));
+                products.add(new Product(productId, productName, shortDescription, longDescription,
+                        price, reviewRating, reviewCount, image, inStock));
             }
         } catch (JSONException e) {
             return Response.error(new ParseError(e));

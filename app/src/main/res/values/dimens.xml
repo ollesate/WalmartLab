@@ -4,4 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="product_image_size">130dp</dimen>
     <dimen name="product_detailed_image_height">300dp</dimen>
+    <dimen name="product_detail_landscape_padding_top">16dp</dimen>
+    <dimen name="product_detail_landscape_padding_bot">32dp</dimen>
+    <dimen name="product_detail_padding_bot">32dp</dimen>
 </resources>
