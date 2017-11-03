@@ -1,105 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:scrollbars="none"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:paddingBottom="32dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
 
         <ImageView
             android:id="@+id/product_image"
-            tools:src="@drawable/example_product"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="300dp"
+            android:contentDescription="@string/product_content_description_image"
+            tools:src="@drawable/example_product" />
 
         <LinearLayout
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp">
 
             <TextView
-                tools:text="Product name"
                 android:id="@+id/product_name"
-                android:layout_marginBottom="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                tools:text="Product name" />
 
             <TextView
                 android:id="@+id/price"
-                tools:text="Price"
                 style="@style/style_price"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                tools:text="Price" />
 
             <TextView
                 android:id="@+id/description"
-                tools:text="Description"
-                android:layout_marginBottom="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                tools:text="Description" />
 
             <TextView
                 android:id="@+id/review_rating"
-                tools:text="4.7"
-                android:layout_marginEnd="4dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                tools:text="4.7" />
 
             <LinearLayout
                 android:id="@+id/star_holder"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:src="@drawable/ic_star_empty"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star_empty" />
 
                 <ImageView
-                    android:src="@drawable/ic_star_empty"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star_empty" />
 
                 <ImageView
-                    android:src="@drawable/ic_star_empty"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star_empty" />
 
                 <ImageView
-                    android:src="@drawable/ic_star_empty"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star_empty" />
 
                 <ImageView
-                    android:src="@drawable/ic_star_empty"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star_empty" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/review_count"
-                tools:text="100 ratings"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                tools:text="100 ratings" />
 
             <TextView
                 android:id="@+id/in_stock"
-                android:layout_marginTop="8dp"
-                tools:text="Currently out of stock"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                tools:text="Currently out of stock" />
 
         </LinearLayout>
 
