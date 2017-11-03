@@ -22,6 +22,8 @@ import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity
         implements Response.Listener<ProductResult>, Response.ErrorListener {
+    private static final String KEY_PRODUCTS = "PRODUCTS";
+
     public static final String EXTRA_CURRENT_PRODUCT = "CURRENT_PRODUCT";
     public static final String EXTRA_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
 
@@ -58,11 +60,17 @@ public class ProductDetailActivity extends AppCompatActivity
             }
         });
 
-        Bundle extras = getIntent().getExtras();
-        List<Product> products = ProductsSingleton.getInstance().getProducts();
-        // Clean up
-        ProductsSingleton.getInstance().setProducts(null);
 
+        List<Product> products;
+        if (savedInstanceState != null) {
+            products = savedInstanceState.getParcelableArrayList(KEY_PRODUCTS);
+        } else {
+            products = ProductsSingleton.getInstance().getProducts();
+            // Clean up
+            ProductsSingleton.getInstance().setProducts(null);
+        }
+
+        Bundle extras = getIntent().getExtras();
         int currentProduct = extras.getInt(EXTRA_CURRENT_PRODUCT);
         int totalProducts = extras.getInt(EXTRA_TOTAL_PRODUCTS);
 
@@ -90,6 +98,12 @@ public class ProductDetailActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(KEY_PRODUCTS, mAdapter.getProducts());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -113,7 +127,7 @@ public class ProductDetailActivity extends AppCompatActivity
     }
 
     private static class ProductPagerAdapter extends FragmentStatePagerAdapter {
-        private final List<Product> mProducts = new ArrayList<>();
+        private final ArrayList<Product> mProducts = new ArrayList<>();
 
         public ProductPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -131,6 +145,10 @@ public class ProductDetailActivity extends AppCompatActivity
         @Override
         public int getCount() {
             return mProducts.size();
+        }
+
+        public ArrayList<Product> getProducts() {
+            return mProducts;
         }
     }
 }
