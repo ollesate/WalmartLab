@@ -15,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements Listener<ProductResult>,
         ProductRecyclerViewAdapter.OnItemClickListener, Response.ErrorListener {
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     @Override
     public void onResponse(ProductResult result) {
         mPageRequester.setTotalPages(result.totalProducts);
-        mAdapter.addProducts(result.products);
+        mAdapter.addProducts(Arrays.asList(result.products));
     }
 
     @Override

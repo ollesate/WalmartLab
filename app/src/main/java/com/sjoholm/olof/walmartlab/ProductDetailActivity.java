@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity
@@ -102,7 +103,7 @@ public class ProductDetailActivity extends AppCompatActivity
     @Override
     public void onResponse(ProductResult response) {
         mPageRequester.setTotalPages(response.totalProducts);
-        mAdapter.addProducts(response.products);
+        mAdapter.addProducts(Arrays.asList(response.products));
         mAdapter.notifyDataSetChanged();
     }
 
