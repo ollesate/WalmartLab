@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
         Intent intent = new Intent(this, ProductDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putInt(ProductDetailActivity.EXTRA_CURRENT_PRODUCT, index);
-        extras.putParcelableArrayList(ProductDetailActivity.EXTRA_PRODUCTS, mAdapter.getProducts());
+        // Set data in singleton to avoid making transaction too big.
+        ProductsSingleton.getInstance().setProducts(mAdapter.getProducts());
         extras.putInt(ProductDetailActivity.EXTRA_TOTAL_PRODUCTS,
                 mPageRequester.getTotalPages());
         intent.putExtras(extras);

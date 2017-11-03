@@ -21,7 +21,6 @@ import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity
         implements Response.Listener<ProductResult>, Response.ErrorListener {
-    public static final String EXTRA_PRODUCTS = "PRODUCTS";
     public static final String EXTRA_CURRENT_PRODUCT = "CURRENT_PRODUCT";
     public static final String EXTRA_TOTAL_PRODUCTS = "TOTAL_PRODUCTS";
 
@@ -60,11 +59,14 @@ public class ProductDetailActivity extends AppCompatActivity
         });
 
         Bundle extras = getIntent().getExtras();
-        List<Product> products = extras.getParcelableArrayList(EXTRA_PRODUCTS);
+        List<Product> products = ProductsSingleton.getInstance().getProducts();
+        // Clean up
+        ProductsSingleton.getInstance().setProducts(null);
+
         int currentProduct = extras.getInt(EXTRA_CURRENT_PRODUCT);
         int totalProducts = extras.getInt(EXTRA_TOTAL_PRODUCTS);
 
-        if (products == null) {
+        if (products == null || products.isEmpty()) {
             Log.e(LOG_TAG, "No products provided");
             finish();
             return;
