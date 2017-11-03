@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements Listener<ProductR
     }
 
     @Override
-    public void onItemClicked(@NonNull Product product, int index) {
+    public void onItemClicked(int index) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putInt(ProductDetailActivity.EXTRA_CURRENT_PRODUCT, index);

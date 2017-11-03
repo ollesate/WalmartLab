@@ -14,15 +14,13 @@ import com.squareup.picasso.Picasso;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-import static android.R.attr.rating;
-
 class ProductHolder extends RecyclerView.ViewHolder {
-    private TextView mProductName;
-    private TextView mPrice;
-    private TextView mReviewRating;
-    private TextView mReviewCount;
-    private TextView mInStock;
-    private ImageView mProductImage;
+    private final TextView mProductName;
+    private final TextView mPrice;
+    private final TextView mReviewRating;
+    private final TextView mReviewCount;
+    private final TextView mInStock;
+    private final ImageView mProductImage;
     private final ViewGroup mStarHolder;
 
     public ProductHolder(View itemView) {

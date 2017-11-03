@@ -112,7 +112,7 @@ public class ProductDetailActivity extends AppCompatActivity
     }
 
     private static class ProductPagerAdapter extends FragmentStatePagerAdapter {
-        private List<Product> mProducts = new ArrayList<>();
+        private final List<Product> mProducts = new ArrayList<>();
 
         public ProductPagerAdapter(FragmentManager fm) {
             super(fm);

@@ -16,7 +16,7 @@ class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductHolder> imp
 
     public interface OnItemClickListener {
 
-        void onItemClicked(@NonNull Product product, int index);
+        void onItemClicked(int index);
     }
 
     public ProductRecyclerViewAdapter(@NonNull OnItemClickListener listener) {
@@ -55,6 +55,6 @@ class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductHolder> imp
     public void onClick(View v) {
         Product product = (Product) v.getTag();
         int index = mProducts.indexOf(product);
-        mOnItemClickListener.onItemClicked(product, index);
+        mOnItemClickListener.onItemClicked(index);
     }
 }

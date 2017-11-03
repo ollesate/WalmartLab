@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 
 public class ProductDetailFragment extends Fragment {
     private static final String LOG_TAG = "ProductDetailFragment";
-    private static String EXTRA_PRODUCT = "PRODUCT";
+    private static final String EXTRA_PRODUCT = "PRODUCT";
 
     public static ProductDetailFragment newInstance(@NonNull Product product) {
         Bundle args = new Bundle();
@@ -61,10 +61,10 @@ public class ProductDetailFragment extends Fragment {
 
         productName.setText(product.productName);
 
-        String descr = product.longDescription != null ? product.longDescription
+        String descriptionStr = product.longDescription != null ? product.longDescription
                 : product.shortDescription;
-        if (descr != null) {
-            description.setText(Html.fromHtml(descr));
+        if (descriptionStr != null) {
+            description.setText(Html.fromHtml(descriptionStr));
         }
         price.setText(product.price);
 
