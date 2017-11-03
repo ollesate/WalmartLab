@@ -40,9 +40,8 @@ class ProductHolder extends RecyclerView.ViewHolder {
 
         Resources res = itemView.getContext().getResources();
 
-        int resString = product.reviewCount == 1 ? R.string.product_rating_count_singular
-                : R.string.product_rating_count_plural;
-        mReviewCount.setText(res.getString(resString, product.reviewCount));
+        mReviewCount.setText(res.getQuantityString(R.plurals.rating_count, product.reviewCount,
+                product.reviewCount));
         mInStock.setText(product.inStock ? R.string.product_in_stock
                 : R.string.product_out_of_stock);
         Picasso.with(itemView.getContext()).load(product.productImage).into(mProductImage);

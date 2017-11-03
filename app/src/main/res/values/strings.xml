@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">WalmartLab</string>
-
-    <string name="product_rating_count_plural">%s ratings</string>
-    <string name="product_rating_count_singular">%s rating</string>
     <string name="product_in_stock">In stock</string>
     <string name="product_out_of_stock">Out of stock</string>
     <string name="product_content_description_image">Image of product</string>
     <string name="product_content_description_star">Star for review</string>
-
 </resources>
